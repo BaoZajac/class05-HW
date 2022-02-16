@@ -42,10 +42,11 @@ V. Program wypisuje wszystkie podane parametry w formie identycznej, w jakiej je
 
 import sys
 
-# wejscie = sys.argv[1]
+wejscie = sys.argv[1]
 saldo = 0
 
 # WCZYTYWANIE Z PLIKU in.txt
+# pytanie: czy wprowadzane dane są w groszach czy w złotych? poniższa pętla przelicza z groszy na złote
 while True:
     plik_in_txt = input()
     if plik_in_txt == "saldo":
@@ -67,21 +68,26 @@ while True:
     elif plik_in_txt == "stop":
         break
 
-print(f"Saldo końcowe to: {saldo}zł")
+print(f"Saldo po wczytaniu danych poczatkowych z in.txt to: {saldo}zł")
+print()
 
-# if wejscie == "saldo":
-#     print("saldo")
-#     zmiana_na_koncie = int(sys.argv[2])  # wyrażone w groszach!
-#     komentarz = sys.argv[3]
-#     # print(zmiana_na_koncie, komentarz)
-# elif wejscie == "zakup":
-#     print("zakup")
-#     identyfikator_produktu = sys.argv[2]
-#     cena_jednostkowa = int(sys.argv[3])
-#     liczba_sztuk = int(sys.argv[4])
-#     saldo -= cena_jednostkowa * liczba_sztuk
-#     if saldo < 0 or cena_jednostkowa < 0 or liczba_sztuk < 0:
-#         print("Błąd")
+
+if wejscie == "saldo":
+    zmiana_na_koncie = int(sys.argv[2]) / 100  # wyrażone w groszach!
+    komentarz = sys.argv[3]
+    saldo += zmiana_na_koncie
+    print(f"Obecne saldo to: {saldo}zł, bo {komentarz}")
+elif wejscie == "zakup":
+    identyfikator_produktu = sys.argv[2]
+    cena_jednostkowa = int(sys.argv[3]) / 100
+    liczba_sztuk = int(sys.argv[4])
+    if (saldo < 0) or (cena_jednostkowa < 0) or (liczba_sztuk < 0):
+        print("Błąd w: cena jednostka lub liczba sztuk")
+    # TODO: Poprawić błąd z tym, że saldo nie może być ujemne
+    else:
+        saldo -= cena_jednostkowa * liczba_sztuk
+        print(f"Obecne saldo to: {saldo}, bo kupiono {identyfikator_produktu} w liczbie {liczba_sztuk} sztuk, po {cena_jednostkowa}zł za sztukę")
+    #TODO: Program podnosi stan magazynowy zakupionego towaru
 # elif wejscie == "sprzedaz":
 #     print("sprzedaz")
 # # else:
