@@ -44,6 +44,7 @@ import sys
 
 wejscie = sys.argv[1]
 saldo = 0
+magazyn = {}
 
 # WCZYTYWANIE Z PLIKU in.txt
 # pytanie: czy wprowadzane dane są w groszach czy w złotych? poniższa pętla przelicza z groszy na złote
@@ -59,6 +60,7 @@ while True:
         ilosc_zakup = int(input())
         saldo -= cena_szt_zakup * ilosc_zakup
         print(f"Obecne saldo to: {saldo}zł, bo kupiono {nazwa_zakup}, w ilości: {ilosc_zakup}, po {cena_szt_zakup} za sztuke")
+        magazyn[nazwa_zakup] = ilosc_zakup
     elif plik_in_txt == "sprzedaz":
         nazwa_sprzedaz = input()
         cena_szt_sprzedaz = int(input()) / 100
@@ -69,6 +71,7 @@ while True:
         break
 
 print(f"Saldo po wczytaniu danych poczatkowych z in.txt to: {saldo}zł")
+print("Stan magazynu:", magazyn)
 print()
 
 
@@ -78,20 +81,44 @@ if wejscie == "saldo":
     saldo += zmiana_na_koncie
     print(f"Obecne saldo to: {saldo}zł, bo {komentarz}")
 elif wejscie == "zakup":
-    identyfikator_produktu = sys.argv[2]
+    nazwa_zakup = sys.argv[2]
     cena_jednostkowa = int(sys.argv[3]) / 100
     liczba_sztuk = int(sys.argv[4])
+    saldo -= cena_jednostkowa * liczba_sztuk
     if (saldo < 0) or (cena_jednostkowa < 0) or (liczba_sztuk < 0):
-        print("Błąd w: cena jednostka lub liczba sztuk")
-    # TODO: Poprawić błąd z tym, że saldo nie może być ujemne
+        print("Błąd w: saldo lub cena jednostki lub liczba sztuk")
+        saldo += cena_jednostkowa * liczba_sztuk            # TODO: potrzebne?
     else:
-        saldo -= cena_jednostkowa * liczba_sztuk
-        print(f"Obecne saldo to: {saldo}, bo kupiono {identyfikator_produktu} w liczbie {liczba_sztuk} sztuk, po {cena_jednostkowa}zł za sztukę")
-    #TODO: Program podnosi stan magazynowy zakupionego towaru
-# elif wejscie == "sprzedaz":
-#     print("sprzedaz")
-# # else:
-# #     print("Błąd")
-# else:
+        print(f"Obecne saldo to: {saldo}zł, bo kupiono {nazwa_zakup} w liczbie {liczba_sztuk} sztuk, po {cena_jednostkowa}zł za sztukę")
+        magazyn[nazwa_zakup] += liczba_sztuk
+        print("Stan magazynu to: ", magazyn)
+
+elif wejscie == "sprzedaz":
+    nazwa_zakup = sys.argv[2]
+    cena_jednostkowa = int(sys.argv[3]) / 100
+    liczba_sztuk = int(sys.argv[4])
+    saldo += cena_jednostkowa * liczba_sztuk
+    magazyn[nazwa_zakup] -= liczba_sztuk
+    if magazyn[nazwa_zakup] < 0 or cena_jednostkowa < 0 or liczba_sztuk < 0:
+        print("Błąd w: stan magazynu lub cena jednostki lub liczba sztuk")
+        magazyn[nazwa_zakup] += liczba_sztuk
+    else:
+        print(f"Obecne saldo to: {saldo}zł, bo sprzedano {nazwa_zakup} w liczbie {liczba_sztuk} sztuk, po {cena_jednostkowa}zł za sztukę")
+        print("Stan magazynu to: ", magazyn)
 
 
+#TODO: stop: program przechodzi do kroku IV
+
+#TODO: II. Program zapamiętuje każdą wprowadzoną linię
+
+#TODO: III. Program wraca do kroku I
+
+#TODO: IV.
+
+#TODO: V.
+
+
+# sample_dict = {"a": 1, "b": 2, "c": None, ("d", "e"): "f"}
+# print(sample_dict)
+# sample_dict["a"] += 1
+# print(sample_dict)
