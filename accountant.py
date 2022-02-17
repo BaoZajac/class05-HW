@@ -52,9 +52,7 @@ saldo = 0
 magazyn = {}
 historia_operacji = []
 
-#TODO: zweryfikować, które dane są podane w złotówkach, a które w groszach
 
-# WCZYTYWANIE Z PLIKU in.txt
 # pytanie: czy wprowadzane dane są w groszach czy w złotych? poniższa pętla przelicza z groszy na złote
 while True:
     plik_in_txt = input()
@@ -106,7 +104,7 @@ elif wejscie == "zakup":
     saldo -= cena_jednostkowa / 100 * liczba_sztuk
     if (saldo < 0) or (cena_jednostkowa < 0) or (liczba_sztuk < 0):
         print("Błąd w: saldo lub cena jednostki lub liczba sztuk")
-        saldo += cena_jednostkowa * liczba_sztuk            # TODO: potrzebne?
+        saldo += cena_jednostkowa * liczba_sztuk            # TODO: prawdopodobnie potrzebne w przypadku możliwości wpisania działań z poziomu uruchomionego programu
     else:
         # print(f"Obecne saldo to: {saldo}zł, bo kupiono {nazwa_zakup} w liczbie {liczba_sztuk} sztuk, po {cena_jednostkowa/100} zł za sztukę")
         if not magazyn.get(nazwa_zakup):
@@ -145,25 +143,23 @@ elif wejscie == "magazyn":
         else:
             print(idx, ": brak w magazynie")
 
-# elif
+elif wejscie == "przeglad":
+    poczatek_historii = int(sys.argv[2])
+    koniec_historii = int(sys.argv[3]) + 1
+    print("Wybrana historia operacji to: ", historia_operacji[poczatek_historii:koniec_historii])
 
 
 
 
+#TODO: ???   stop: program przechodzi do kroku IV   - czy to znaczy, że w trakcie działania programu możemy jeszcze dokładać jakieś działania?
+#                                                     czy program działa tylko jako taki,w którym dane wprowadza się jedynie przy jego wywoływaniu?
 
-#TODO: stop: program przechodzi do kroku IV
+#TODO: ???   III. Program wraca do kroku I    - ale przecież nie może, bo punkt I działa przy wywołaniu programu z konsoli...,
+#                                               no chyba, że możemy wprowadzać następne dane już wewnatrz programu? możemy?
 
-#TODO: III. Program wraca do kroku I    - ale przecież nie może, bo punkt I działa przy wywołaniu programu z konsoli...
-
-#TODO: IV. W zależności od wywołania:
-#TODO:    f) Program wypisuje wszystkie akcje zapisane pod indeksami w zakresie [od, do] (zakresy włącznie)
 
 #TODO: V. Program wypisuje wszystkie podane parametry w formie identycznej, w jakiej je pobrał.
+#       ----->  wynik działania dla a), b) i c) jest taki jak ma być, ale nie pod względem graficznym - czy obecny stan jest wystarczający?
 
-#TODO: wynik działania dl a), b) i c) jest taki jak ma być, ale nie pod względem graficznym - czy obecny stan jest wystarczający?
+#TODO: zweryfikować, które dane są podane w złotówkach, a które w groszach
 
-
-# sample_dict = {"a": 1, "b": 2, "c": None, ("d", "e"): "f"}
-# print(sample_dict)
-# sample_dict["a"] += 1
-# print(sample_dict)
