@@ -137,11 +137,15 @@ elif wejscie == "sprzedaz":
 
 if wejscie == "konto":
     print(f"Stan konta to: {saldo}zł")
-elif wejscie == "magazyn":
-    print("Stan magazynu to:\n", magazyn)
-else:
-    print(123)
 
+elif wejscie == "magazyn":
+    for idx in sys.argv[2:]:
+        if magazyn.get(idx):
+            print(idx, ":", magazyn[idx])
+        else:
+            print(idx, ": brak w magazynie")
+
+# elif
 
 
 
@@ -152,7 +156,6 @@ else:
 #TODO: III. Program wraca do kroku I    - ale przecież nie może, bo punkt I działa przy wywołaniu programu z konsoli...
 
 #TODO: IV. W zależności od wywołania:
-#TODO:    e) wypisuje stany magazynowe w nowych liniach
 #TODO:    f) Program wypisuje wszystkie akcje zapisane pod indeksami w zakresie [od, do] (zakresy włącznie)
 
 #TODO: V. Program wypisuje wszystkie podane parametry w formie identycznej, w jakiej je pobrał.
