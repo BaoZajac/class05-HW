@@ -47,36 +47,37 @@ V. Program wypisuje wszystkie podane parametry w formie identycznej, w jakiej je
 import sys
 
 
+historia_operacji = []
+
 wejscie = sys.argv[1]
 saldo = 0
 magazyn = {}
-historia_operacji = []
+
+#TODO: sprawdzić czy wszystkie dane są groszach
 
 
-# pytanie: czy wprowadzane dane są w groszach czy w złotych? poniższa pętla przelicza z groszy na złote
 while True:
     plik_in_txt = input()
     if plik_in_txt == "saldo":
-        kwota = int(input())
-        saldo += kwota / 100
-        nazwa_saldo = input()
-        # print(f"Obecne saldo to: {saldo}zł ze względu na: {nazwa_saldo}")
-        obecna_lista = [plik_in_txt, kwota, nazwa_saldo]
+        kwota = input()
+        # saldo += kwota
+        nazwa_operacji = input()
+        obecna_lista = [plik_in_txt, kwota, nazwa_operacji]
         historia_operacji.extend(obecna_lista)
     elif plik_in_txt == "zakup":
         nazwa_zakup = input()
-        cena_szt_zakup = int(input())
-        ilosc_zakup = int(input())
-        saldo -= cena_szt_zakup / 100 * ilosc_zakup
+        cena_szt_zakup = input()
+        ilosc_zakup = input()
+        # saldo -= cena_szt_zakup * ilosc_zakup
         # print(f"Obecne saldo to: {saldo}zł, bo kupiono {nazwa_zakup}, w ilości: {ilosc_zakup}, po {cena_szt_zakup/100}zł za sztuke")
-        magazyn[nazwa_zakup] = ilosc_zakup
+        # magazyn[nazwa_zakup] += ilosc_zakup
         obecna_lista = [plik_in_txt, nazwa_zakup, cena_szt_zakup, ilosc_zakup]
         historia_operacji.extend(obecna_lista)
     elif plik_in_txt == "sprzedaz":
         nazwa_sprzedaz = input()
         cena_szt_sprzedaz = int(input())
         ilosc_sprzedaz = int(input())
-        saldo += cena_szt_sprzedaz / 100 * ilosc_sprzedaz
+        # saldo += cena_szt_sprzedaz * ilosc_sprzedaz
         # print(f"Obecne saldo to: {saldo}zł, bo sprzedano {nazwa_sprzedaz} w ilosci: {ilosc_sprzedaz}, po {cena_szt_sprzedaz/100}zł za sztuke")
         obecna_lista = [plik_in_txt, nazwa_sprzedaz, cena_szt_sprzedaz, ilosc_sprzedaz]
         historia_operacji.extend(obecna_lista)
