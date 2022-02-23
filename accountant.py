@@ -78,6 +78,7 @@ while True:
         ilosc_sprzedaz = int(input())
         saldo += cena_szt_sprzedaz / 100 * ilosc_sprzedaz
         # print(f"Obecne saldo to: {saldo}zł, bo sprzedano {nazwa_sprzedaz} w ilosci: {ilosc_sprzedaz}, po {cena_szt_sprzedaz/100}zł za sztuke")
+        # magazyn[nazwa_sprzedaz]
         obecna_lista = [plik_in_txt, nazwa_sprzedaz, cena_szt_sprzedaz, ilosc_sprzedaz]
         historia_operacji.extend(obecna_lista)
     elif plik_in_txt == "stop":
@@ -96,7 +97,7 @@ if wejscie == "saldo":
     obecna_lista = [wejscie, zmiana_na_koncie, komentarz]
     historia_operacji.extend(obecna_lista)
     historia_operacji.append("stop")
-    print(historia_operacji)
+    print("Twoje obecne saldo to: ", saldo, "zł")
 elif wejscie == "zakup":
     nazwa_zakup = sys.argv[2]
     cena_jednostkowa = int(sys.argv[3])
@@ -146,14 +147,17 @@ elif wejscie == "magazyn":
 elif wejscie == "przeglad":
     poczatek_historii = int(sys.argv[2])
     koniec_historii = int(sys.argv[3]) + 1
+    print(historia_operacji)
     print("Wybrana historia operacji to: ", historia_operacji[poczatek_historii:koniec_historii])
+
+
+print(historia_operacji)
 
 
 
 
 #TODO: ???   stop: program przechodzi do kroku IV   - czy to znaczy, że w trakcie działania programu możemy jeszcze dokładać jakieś działania?
 #                                                     czy program działa tylko jako taki,w którym dane wprowadza się jedynie przy jego wywoływaniu?
-
 #TODO: ???   III. Program wraca do kroku I    - ale przecież nie może, bo punkt I działa przy wywołaniu programu z konsoli...,
 #                                               no chyba, że możemy wprowadzać następne dane już wewnatrz programu? możemy?
 
@@ -161,5 +165,15 @@ elif wejscie == "przeglad":
 #TODO: V. Program wypisuje wszystkie podane parametry w formie identycznej, w jakiej je pobrał.
 #       ----->  wynik działania dla a), b) i c) jest taki jak ma być, ale nie pod względem graficznym - czy obecny stan jest wystarczający?
 
+
+#TODO: poprawić "przeglad"  -> ma wyrzucać cały zestaw, a nie tylko dane miejsce?
+#       ----->  poprawić czy może zostać tak jak jest?
+
+
+
+
+# ---------------------
 #TODO: zweryfikować, które dane są podane w złotówkach, a które w groszach
+
+#TODO: sprawdzić czy saldo nigdy nie spada poniżej 0
 
