@@ -49,21 +49,23 @@ import sys
 
 historia_operacji = []
 wejscie = sys.argv[1]
-
 saldo = 0
 magazyn = {}
 
 #TODO: sprawdzić czy wszystkie dane są groszach
 
-#poniższa pętla wczytuje dane z zewnętrznego pliku z historią operacji i zapisuje je do historii operacji wewnątrz programu
+# poniższa pętla wczytuje dane z zewnętrznego pliku z historią operacji i zapisuje je do historii operacji wewnątrz programu
 while True:
     plik_in_txt = input()
     if plik_in_txt == "saldo":
         zmiana_na_koncie = input()
         # saldo += zmiana_na_koncie
         nazwa_operacji = input()
-        obecna_lista = [plik_in_txt, zmiana_na_koncie, nazwa_operacji]
-        historia_operacji.extend(obecna_lista)
+        obecna_lista = (plik_in_txt, zmiana_na_koncie, nazwa_operacji)
+        # print(type(obecna_lista))
+        historia_operacji.append(obecna_lista)
+        # print(type(historia_operacji))
+        # print((historia_operacji))
     elif plik_in_txt == "zakup":
         nazwa_zakup = input()
         cena_szt_zakup = input()
@@ -71,16 +73,16 @@ while True:
         # saldo -= cena_szt_zakup * ilosc_zakup
         # print(f"Obecne saldo to: {saldo}zł, bo kupiono {nazwa_zakup}, w ilości: {ilosc_zakup}, po {cena_szt_zakup/100}zł za sztuke")
         # magazyn[nazwa_zakup] += ilosc_zakup
-        obecna_lista = [plik_in_txt, nazwa_zakup, cena_szt_zakup, ilosc_zakup]
-        historia_operacji.extend(obecna_lista)
+        obecna_lista = (plik_in_txt, nazwa_zakup, cena_szt_zakup, ilosc_zakup)
+        historia_operacji.append(obecna_lista)
     elif plik_in_txt == "sprzedaz":
         nazwa_sprzedaz = input()
         cena_szt_sprzedaz = int(input())
         ilosc_sprzedaz = int(input())
         # saldo += cena_szt_sprzedaz * ilosc_sprzedaz
         # print(f"Obecne saldo to: {saldo}zł, bo sprzedano {nazwa_sprzedaz} w ilosci: {ilosc_sprzedaz}, po {cena_szt_sprzedaz/100}zł za sztuke")
-        obecna_lista = [plik_in_txt, nazwa_sprzedaz, cena_szt_sprzedaz, ilosc_sprzedaz]
-        historia_operacji.extend(obecna_lista)
+        obecna_lista = (plik_in_txt, nazwa_sprzedaz, cena_szt_sprzedaz, ilosc_sprzedaz)
+        historia_operacji.append(obecna_lista)
     elif plik_in_txt == "stop":
         break
     else:
@@ -88,20 +90,20 @@ while True:
         break
 
 
-# wczytanie danych wejsciowych i zapisanie ich w historii operacji
+# wczytanie danych wejsciowych uruchamiających program i zapisanie ich w historii operacji
 if wejscie == "saldo":
     zmiana_na_koncie = sys.argv[2]
     nazwa_operacji = sys.argv[3]
     # saldo += zmiana_na_koncie
     # print(f"Obecne saldo to: {saldo}zł, bo {nazwa_operacji}")
-    obecna_lista = [wejscie, zmiana_na_koncie, nazwa_operacji]
-    historia_operacji.extend(obecna_lista)
-    historia_operacji.append("stop")
+    obecna_lista = (wejscie, zmiana_na_koncie, nazwa_operacji)
+    historia_operacji.append(obecna_lista)
+    historia_operacji.append(("stop",))
 elif wejscie == "zakup" or "sprzedaz":
     nazwa_zakup = sys.argv[2]
     cena_jednostkowa = sys.argv[3]
     liczba_sztuk = sys.argv[4]
-    obecna_lista = [wejscie, nazwa_zakup, cena_jednostkowa, liczba_sztuk]
+    obecna_lista = (wejscie, nazwa_zakup, cena_jednostkowa, liczba_sztuk)
     # saldo -= cena_jednostkowa * liczba_sztuk
     # if (saldo < 0) or (cena_jednostkowa < 0) or (liczba_sztuk < 0):
         # print("Błąd w: saldo lub cena jednostki lub liczba sztuk")
@@ -113,8 +115,8 @@ elif wejscie == "zakup" or "sprzedaz":
         # magazyn[nazwa_zakup] += liczba_sztuk
         # print("Stan magazynu to: ", magazyn)
         # obecna_lista = [wejscie, nazwa_zakup, cena_jednostkowa, liczba_sztuk]
-    historia_operacji.extend(obecna_lista)      #TODO: odjąć to z historii operacji jeśli saldo spadnie poniżej zera czy inne uwarunkowania dające błąd
-    historia_operacji.append("stop")
+    historia_operacji.append(obecna_lista)      #TODO: odjąć to z historii operacji jeśli saldo spadnie poniżej zera czy inne uwarunkowania dające błąd
+    historia_operacji.append(("stop",))
         # print(historia_operacji)
 # elif wejscie == "sprzedaz":
 #     nazwa_zakup = sys.argv[2]
@@ -134,10 +136,56 @@ elif wejscie == "zakup" or "sprzedaz":
     #     historia_operacji.append("stop")
     #     print(historia_operacji)
 
-print(historia_operacji)
+# print(historia_operacji)
+
 
 # przerobienie historii operacji na działania
 
+# while True:
+#     operacja = historia_operacji
+
+for polecenie in historia_operacji:
+    if polecenie[0] == "saldo":
+        kwota = polecenie[1]
+        saldo += int(kwota)
+        if saldo < 0:
+            print("Brak wystarczających środków na koncie do przeprowadzenia operacji")
+            break
+    elif polecenie[0] == "zakup":
+        kwota = int(polecenie[2]) * int(polecenie[3])
+        saldo -= kwota
+        if saldo < 0 or int(polecenie[2]) < 0 or int(polecenie[3]) < 0:
+            saldo += kwota
+            print("Błąd")
+            break
+        przedmiot = polecenie[1]
+        if not magazyn.get(przedmiot):
+            magazyn[przedmiot] = 0
+        magazyn[przedmiot] += int(polecenie[3])
+    elif polecenie[0] == "sprzedaz":
+        kwota = int(polecenie[2]) * int(polecenie[3])
+        saldo += kwota
+        if magazyn[polecenie[1]] < 0 or int(polecenie[2]) < 0 or int(polecenie[3]) < 0:
+            saldo -= kwota
+            print("Błąd")
+            break
+        magazyn[polecenie[1]] -= int(polecenie[3])
+    else:
+        break
+
+# wyniki ostateczne
+if wejscie == "saldo" and saldo >= 0:
+    print(type(historia_operacji))
+    for element in historia_operacji:
+        for element2 in element:
+            print(element2)
+
+#TODO: rozwiązać problem pokazywania historii dla "zakup" i "sprzedaz"
+if wejscie == "zakup" and (saldo < 0 or int(polecenie[2]) < 0 or int(polecenie[3]) < 0):
+
+
+# print(magazyn)
+# print("Saldo: ", saldo)
 
 
 
