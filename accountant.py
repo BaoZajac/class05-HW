@@ -55,7 +55,7 @@ magazyn = {}
 
 #TODO: sprawdzić czy wszystkie dane są groszach
 
-
+#poniższa pętla wczytuje dane z zewnętrznego pliku z historią operacji i zapisuje je do historii operacji wewnątrz programu
 while True:
     plik_in_txt = input()
     if plik_in_txt == "saldo":
