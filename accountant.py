@@ -90,16 +90,14 @@ elif wejscie == "zakup" or "sprzedaz":
     cena_jednostkowa = sys.argv[3]
     liczba_sztuk = sys.argv[4]
     obecna_lista = (wejscie, nazwa_zakup, cena_jednostkowa, liczba_sztuk)
-    historia_operacji.append(obecna_lista)      #TODO: odjąć to z historii operacji jeśli saldo spadnie poniżej zera czy inne uwarunkowania dające błąd
+    historia_operacji.append(obecna_lista)
     historia_operacji.append(("stop",))
-
 
 print(historia_operacji)
 
-
 # przerobienie historii operacji na działania
 for polecenie in historia_operacji:
-    if polecenie[0] == "saldo":         # PYTANIE BZ: skąd program wie, że ma wczytać w liście I element z tupli wewnętrznej
+    if polecenie[0] == "saldo":         # TODO: PYTANIE BZ: skąd program wie, że ma wczytać w liście I element z tupli wewnętrznej
         kwota = polecenie[1]
         saldo += int(kwota)
         if saldo < 0:
@@ -131,13 +129,18 @@ for polecenie in historia_operacji:
 
 # wyniki ostateczne
 if wejscie == "saldo" and saldo >= 0:
-    print(type(historia_operacji))
+    for element in historia_operacji:
+        for element2 in element:
+            print(element2)
+elif wejscie == "sprzedaz" and int(magazyn[sys.argv[2]]) >= int(sys.argv[4]) and int(sys.argv[3]) >= 0 and int(sys.argv[4]) >= 0:
+    for element in historia_operacji:
+        for element2 in element:
+            print(element2)
+elif wejscie == "zakup" and saldo >= 0 and int(sys.argv[3]) >= 0 and int(sys.argv[4]) >= 0:
     for element in historia_operacji:
         for element2 in element:
             print(element2)
 
-#TODO: rozwiązać problem pokazywania historii dla "zakup" i "sprzedaz"
-# if wejscie == "zakup" and (saldo < 0 or int(polecenie[2]) < 0 or int(polecenie[3]) < 0):
 
 
 # print(magazyn)
