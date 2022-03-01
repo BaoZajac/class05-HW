@@ -85,9 +85,7 @@ if wejscie == "saldo":
     obecna_lista = (wejscie, zmiana_na_koncie, nazwa_operacji)
     historia_operacji.append(obecna_lista)
     historia_operacji.append(("stop",))
-elif wejscie == "zakup" or "sprzedaz":
-    #TODO: gdy jest "or" wchodzi tu przy wpisaniu "konto", "magazyn", "przeglad" oraz błędnej komendy, dlaczego??
-    # ponadto, gdy "or" zmieni się na "and" to już tu nie wchodzą, ale działa dla "zakup"! (oczywiście ponadto wówczas nie działa dla "sprzedaz")
+elif wejscie == "zakup" or wejscie == "sprzedaz":
     nazwa_zakup = sys.argv[2]
     cena_jednostkowa = sys.argv[3]
     liczba_sztuk = sys.argv[4]
@@ -130,11 +128,12 @@ for polecenie in historia_operacji:
 
 
 # wyniki ostateczne
-if wejscie == "saldo" and saldo >= 0:       #TODO - upewnienie się: jest inne polecenie w zadaniu, a inny efekt ma wyjść wg out.txt, którą wersję mamy zrobić?
+if wejscie == "saldo" and saldo >= 0:
     for element in historia_operacji:
         for element2 in element:
             print(element2)
 elif wejscie == "sprzedaz" and int(magazyn[sys.argv[2]]) >= 0 and int(sys.argv[3]) >= 0 and int(sys.argv[4]) >= 0:
+    #TODO tu wchodzi błąd z ilością w magazynie - jest to związane z pętlą for w "sprzedaz", po niej wychodzi różny stan magazynu i tu wczytuje się tylko jedna opcja z dwóch
     for element in historia_operacji:
         for element2 in element:
             print(element2)
@@ -144,7 +143,7 @@ elif wejscie == "zakup" and saldo >= 0 and int(sys.argv[3]) >= 0 and int(sys.arg
             print(element2)
 elif wejscie == "konto":
     print(saldo)
-elif wejscie == "magazyn":          #TODO - upewnienie się: jeśli jest błąd w pliku wejściowym (przy zakupie, sprzedaży czy saldzie) to źle wyświetla stan magazynu, czy to poprawić?
+elif wejscie == "magazyn":
     for idx in sys.argv[2:]:
         if magazyn.get(idx):
             print(idx, ":", magazyn[idx])
