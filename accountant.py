@@ -14,7 +14,7 @@ Działanie programu będzie zależne od podanych argumentów
 Niezależnie od trybu program zawsze będzie działał w następujący sposób
 I. Program pobierze rodzaj akcji (ciąg znaków).
     Dozwolone akcje to "saldo", zakup", "sprzedaż".
-#TODO: ??  Jeśli użytkownik wprowadzi inną akcję, program powinien zwrócić błąd i zakończyć działanie.
+    Jeśli użytkownik wprowadzi inną akcję, program powinien zwrócić błąd i zakończyć działanie.
 
     saldo: program pobiera dwie linie: zmiana na koncie firmy wyrażona w groszach (int) (może być ujemna) oraz komentarz do zmiany (str)
 
@@ -86,6 +86,8 @@ if wejscie == "saldo":
     historia_operacji.append(obecna_lista)
     historia_operacji.append(("stop",))
 elif wejscie == "zakup" or "sprzedaz":
+    #TODO: gdy jest "or" wchodzi tu przy wpisaniu "konto", "magazyn", "przeglad" oraz błędnej komendy, dlaczego??
+    # ponadto, gdy "or" zmieni się na "and" to już tu nie wchodzą, ale działa dla "zakup"! (oczywiście ponadto wówczas nie działa dla "sprzedaz")
     nazwa_zakup = sys.argv[2]
     cena_jednostkowa = sys.argv[3]
     liczba_sztuk = sys.argv[4]
@@ -93,11 +95,10 @@ elif wejscie == "zakup" or "sprzedaz":
     historia_operacji.append(obecna_lista)
     historia_operacji.append(("stop",))
 
-print(historia_operacji)
 
 # przerobienie historii operacji na działania
 for polecenie in historia_operacji:
-    if polecenie[0] == "saldo":         # TODO: PYTANIE BZ: skąd program wie, że ma wczytać w liście I element z tupli wewnętrznej
+    if polecenie[0] == "saldo":
         kwota = polecenie[1]
         saldo += int(kwota)
         if saldo < 0:
@@ -127,12 +128,13 @@ for polecenie in historia_operacji:
     else:
         break
 
+
 # wyniki ostateczne
-if wejscie == "saldo" and saldo >= 0:
+if wejscie == "saldo" and saldo >= 0:       #TODO - upewnienie się: jest inne polecenie w zadaniu, a inny efekt ma wyjść wg out.txt, którą wersję mamy zrobić?
     for element in historia_operacji:
         for element2 in element:
             print(element2)
-elif wejscie == "sprzedaz" and int(magazyn[sys.argv[2]]) >= int(sys.argv[4]) and int(sys.argv[3]) >= 0 and int(sys.argv[4]) >= 0:
+elif wejscie == "sprzedaz" and int(magazyn[sys.argv[2]]) >= 0 and int(sys.argv[3]) >= 0 and int(sys.argv[4]) >= 0:
     for element in historia_operacji:
         for element2 in element:
             print(element2)
@@ -140,43 +142,20 @@ elif wejscie == "zakup" and saldo >= 0 and int(sys.argv[3]) >= 0 and int(sys.arg
     for element in historia_operacji:
         for element2 in element:
             print(element2)
+elif wejscie == "konto":
+    print(saldo)
+elif wejscie == "magazyn":          #TODO - upewnienie się: jeśli jest błąd w pliku wejściowym (przy zakupie, sprzedaży czy saldzie) to źle wyświetla stan magazynu, czy to poprawić?
+    for idx in sys.argv[2:]:
+        if magazyn.get(idx):
+            print(idx, ":", magazyn[idx])
+        else:
+            print(idx, ": brak w magazynie")
+elif wejscie == "przeglad":
+    for element in historia_operacji[int(sys.argv[2]):int(sys.argv[3])+1]:
+        for element2 in element:
+            print(element2)
+    print("stop")
+else:
+    print("Błąd")
 
-
-
-# print(magazyn)
-# print("Saldo: ", saldo)
-
-
-
-
-
-# if wejscie == "konto":
-#     print(f"Stan konta to: {saldo}zł")
-
-# elif wejscie == "magazyn":
-#     for idx in sys.argv[2:]:
-#         if magazyn.get(idx):
-#             print(idx, ":", magazyn[idx])
-#         else:
-#             print(idx, ": brak w magazynie")
-#
-# elif wejscie == "przeglad":
-#     poczatek_historii = int(sys.argv[2])
-#     koniec_historii = int(sys.argv[3]) + 1
-#     print("Wybrana historia operacji to: ", historia_operacji[poczatek_historii:koniec_historii])
-
-
-
-
-#TODO: ???   stop: program przechodzi do kroku IV   - czy to znaczy, że w trakcie działania programu możemy jeszcze dokładać jakieś działania?
-#                                                     czy program działa tylko jako taki,w którym dane wprowadza się jedynie przy jego wywoływaniu?
-
-#TODO: ???   III. Program wraca do kroku I    - ale przecież nie może, bo punkt I działa przy wywołaniu programu z konsoli...,
-#                                               no chyba, że możemy wprowadzać następne dane już wewnatrz programu? możemy?
-
-
-#TODO: V. Program wypisuje wszystkie podane parametry w formie identycznej, w jakiej je pobrał.
-#       ----->  wynik działania dla a), b) i c) jest taki jak ma być, ale nie pod względem graficznym - czy obecny stan jest wystarczający?
-
-#TODO: zweryfikować, które dane są podane w złotówkach, a które w groszach
 
